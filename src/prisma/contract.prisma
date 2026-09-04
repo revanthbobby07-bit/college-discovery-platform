@@ -1,0 +1,69 @@
+// use prisma-next
+
+model College {
+  id       Int    @id @default(autoincrement())
+  name     String
+  location String
+  city     String
+  state    String
+  fees     Int
+  rating   Float
+  overview String
+
+  courses    Course[]
+  placements Placement[]
+  reviews    Review[]
+  cutoffs    Cutoff[]
+
+  createdAt temporal.createdAtString()
+  updatedAt temporal.updatedAtString()
+}
+
+model Course {
+  id        Int    @id @default(autoincrement())
+  collegeId Int
+  name      String
+  duration  String
+  degree    String
+  fees      Int
+
+  college College @relation(fields: [collegeId], references: [id])
+
+  createdAt temporal.createdAtString()
+}
+
+model Placement {
+  id             Int   @id @default(autoincrement())
+  collegeId      Int
+  averagePackage Float
+  highestPackage Float
+  placementRate  Float
+
+  college College @relation(fields: [collegeId], references: [id])
+
+  createdAt temporal.createdAtString()
+}
+
+model Review {
+  id          Int    @id @default(autoincrement())
+  collegeId   Int
+  studentName String
+  rating      Float
+  comment     String
+
+  college College @relation(fields: [collegeId], references: [id])
+
+  createdAt temporal.createdAtString()
+}
+
+model Cutoff {
+  id         Int    @id @default(autoincrement())
+  collegeId  Int
+  courseName String
+  category   String
+  cutoffRank Int
+
+  college College @relation(fields: [collegeId], references: [id])
+
+  createdAt temporal.createdAtString()
+}
